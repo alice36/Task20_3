@@ -12,20 +12,18 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ShopControllerTest {
 
     @Mock private ShopRepository shopRepository;
-    @Mock private Shop shop;
+    private Shop shop;
     @InjectMocks private ShopController shopController;
 
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
 //        shopRepository = Mockito.mock(ShopRepository.class);
-//        shop = Mockito.mock(Shop.class);
 
         Map<Item, Integer> stock = new HashMap<>();
         stock.put(new Item("Piwo", 18, 4, true), 5);
@@ -33,8 +31,8 @@ public class ShopControllerTest {
         stock.put(new Item("Chleb", 1, 5, true), 5);
         stock.put(new Item("Jogurt", 1, 2, true), 5);
         stock.put(new Item("Mleko", 1, 3, true), 1);
-
-        shop = new Shop(0, stock);
+        shop = spy(new Shop(0, stock));
+//        shop = new Shop(0, stock);
         when(shopRepository.findShop()).thenReturn(shop);
 
         shopController = new ShopController(shopRepository);
@@ -131,8 +129,6 @@ public class ShopControllerTest {
     public void isDeletedMilk(){
         // given
         Human human = new Human("Franio",45, "Górnik", 10);
-        int number=0;
-
         // when
         shopController.sellItem(human, "Mleko");
         boolean answer = shop.hasItem("Mleko");
