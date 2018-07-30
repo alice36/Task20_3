@@ -23,7 +23,6 @@ public class ShopControllerTest {
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-//        shopRepository = Mockito.mock(ShopRepository.class);
 
         Map<Item, Integer> stock = new HashMap<>();
         stock.put(new Item("Piwo", 18, 4, true), 5);
@@ -31,8 +30,8 @@ public class ShopControllerTest {
         stock.put(new Item("Chleb", 1, 5, true), 5);
         stock.put(new Item("Jogurt", 1, 2, true), 5);
         stock.put(new Item("Mleko", 1, 3, true), 1);
-        shop = spy(new Shop(0, stock));
-//        shop = new Shop(0, stock);
+
+        shop = new Shop(0, stock);
         when(shopRepository.findShop()).thenReturn(shop);
 
         shopController = new ShopController(shopRepository);
@@ -74,15 +73,6 @@ public class ShopControllerTest {
         assertThat(answer, is(false));
     }
 
-    @Test
-    public void soundTest(){
-        // given
-        Human human = new Human("Franio",45, "Górnik", 10);
-        // when
-        shopController.sellItem(human, "Jogurt");
-        //then
-        verify(shop).playCashSound();
-    }
 
     @Test
     public void humanMoney(){
@@ -95,44 +85,4 @@ public class ShopControllerTest {
         assertThat(humanMoney,is(8));
     }
 
-    @Test
-    public void shopMoney(){
-        // given
-        Human human = new Human("Franio",45, "Górnik", 10);
-        // when
-        shopController.sellItem(human, "Jogurt");
-        int shopMoney = shop.getMoney();
-        //then
-        assertThat(shopMoney,is(2));
-    }
-
-    @Test
-    public void howManyJoghurts(){
-        // given
-        Human human = new Human("Franio",45, "Górnik", 10);
-        int number=0;
-
-        // when
-        shopController.sellItem(human, "Jogurt");
-        Set<Map.Entry<Item, Integer>> set = shop.getStock().entrySet();
-        for (Map.Entry<Item, Integer> mentry : set) {
-            if (mentry.getKey().getName().equals("Jogurt")) {
-                number = mentry.getValue();
-                break;
-            }
-        }
-        //then
-        assertThat(number,is(4));
-    }
-
-    @Test
-    public void isDeletedMilk(){
-        // given
-        Human human = new Human("Franio",45, "Górnik", 10);
-        // when
-        shopController.sellItem(human, "Mleko");
-        boolean answer = shop.hasItem("Mleko");
-        //then
-        assertThat(answer,is(false));
-    }
 }

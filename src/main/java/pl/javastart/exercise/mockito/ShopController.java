@@ -33,27 +33,23 @@ public class ShopController {
     }
 
     public boolean ifEnoughMoney(Human human, String itemName) {
-        boolean check = false;
 
         Item item = shop.findItemByName(itemName);
         if (item.getPrice() > human.getMoney()) {
             return false;
         } else {
-            check = true;
+            return true;
         }
-        return check;
     }
 
     public boolean ifIsLegal(Human human, String itemName) {
-        boolean check = false;
 
         Item item = shop.findItemByName(itemName);
         if (!item.isLegal() && (human.getJob().equals("Policjant"))) {
-            check = false;
+            return false;
         } else {
-            check = true;
+            return true;
         }
-        return check;
     }
 
 

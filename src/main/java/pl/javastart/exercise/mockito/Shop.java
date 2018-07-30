@@ -48,7 +48,6 @@ public class Shop {
 
     public void deleteItem(String itemName){//test
         Set<Map.Entry<Item, Integer>> set = stock.entrySet();
-        Item item = null;
 
         for (Map.Entry<Item, Integer> mentry : set) {
             if(mentry.getKey().getName().equals(itemName)){
